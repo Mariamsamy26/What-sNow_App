@@ -38,7 +38,7 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     for (int i = 0; i < Categorylist.length; i++)
                       Padding(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: MaterialButton(
                           padding: EdgeInsets.zero, // Remove default padding
                           child: SizedBox(
@@ -74,10 +74,10 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 5),
               CustomDivider(labelText: 'Top news'),
 
-              Padding(padding: EdgeInsets.all(15),
+              Padding(padding: const EdgeInsets.all(15),
                 child: FutureBuilder(
                   future: ApiManger.getNewsRandom(), // Asynchronous API call
                   builder: (context, snapshot) {
