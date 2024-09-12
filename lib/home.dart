@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:newsapp/layout/favoritesTap.dart';
-import 'package:newsapp/layout/historyTap.dart';
-import 'package:newsapp/layout/settingTap/settingScreen.dart';
+import '../layout/favoritesTap.dart';
+import '../layout/historyTap.dart';
+import '../layout/settingTap/settingScreen.dart';
 
 import 'color_manager.dart';
 import 'layout/HomeTab/homeScreen.dart';
@@ -29,8 +29,8 @@ class _homeState extends State<home> {
           backgroundColor: Colors.transparent,
           elevation: 0.0,
           currentIndex: currentIndex,
-          selectedItemColor: ColorManager.colorOffwhite,
-          unselectedItemColor: ColorManager.colorblueblack,
+          selectedItemColor: ColorManager.colorblueblack,
+          unselectedItemColor: ColorManager.colorOffwhite,
           type: BottomNavigationBarType.fixed,
           onTap: (index) {
             currentIndex = index;
