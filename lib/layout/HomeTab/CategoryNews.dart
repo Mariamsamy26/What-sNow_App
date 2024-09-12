@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../color_manager.dart';
-import '../../components/CustomCategory.dart';
+import '../../components/CustomNews.dart';
 import '../../model/NewsModel.dart';
 import '../../network/remote/ApiManger.dart';
+import 'NewsDetails.dart';
 
 class CategoryNews extends StatelessWidget {
   String category;
@@ -50,12 +51,17 @@ class CategoryNews extends StatelessWidget {
                         children: [
                           for (var article in articlesList)
                             if (article.urlToImage != null)
-                              CustomCategory(
+                              CustomNews(
                                 urlImage: article.urlToImage ?? '',
                                 title: article.title ?? 'No title',
                                 onPressedShare: () {},
                                 onPressedFav: () {},
                                 iconFav: Icons.favorite_border,
+
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (C) => NewsDetails(url:article.url ??'')));
+                                },
                               ),
                         ],
                       );

@@ -4,8 +4,6 @@ import 'package:http/http.dart' as https;
 import 'package:newsapp/model/NewsModel.dart';
 
 class ApiManger {
-  Uri newuri = Uri.https("newsapi.org", "v2/top-headlines",
-      {"apiKey": "ed597789cb1f40bca350919b6a61f1f7"});
 
   static Future<NewsModel> getNewsCategories({required String category}) async {
     Uri newuri = Uri.https("newsapi.org", "v2/top-headlines",

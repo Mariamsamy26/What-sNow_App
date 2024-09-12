@@ -4,11 +4,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:newsapp/network/remote/ApiManger.dart';
 
 import '../../color_manager.dart';
-import '../../components/CustomCategory.dart';
+import '../../components/CustomNews.dart';
 import '../../components/CustomDivider.dart';
 import '../../model/NewsModel.dart';
 import '../../model/categoryModel.dart';
 import 'CategoryNews.dart';
+import 'NewsDetails.dart';
 
 class HomeScreen extends StatelessWidget {
   static const String routeName = 'Home Screen';
@@ -70,9 +71,6 @@ class HomeScreen extends StatelessWidget {
                             onPressed: () {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (C) => CategoryNews(category:Categorylist[i].label,)));
-
-                              ApiManger.getNewsCategories(
-                                  category: Categorylist[i].label);
                             },
                           ),
                         ),
@@ -102,7 +100,7 @@ class HomeScreen extends StatelessWidget {
                           children: [
                             for (var article in articlesList)
                               if (article.urlToImage != null)
-                                CustomCategory(
+                                CustomNews(
                                   urlImage: article.urlToImage ?? '',
                                   // Use the actual URL for the image
                                   title: article.title ?? 'No title',
@@ -110,6 +108,10 @@ class HomeScreen extends StatelessWidget {
                                   onPressedShare: () {},
                                   onPressedFav: () {},
                                   iconFav: Icons.favorite_border,
+                                  onTap: () {
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (C) => NewsDetails(url:article.url ??'')));
+                                  },
                                 ),
                           ],
                         );
@@ -128,11 +130,11 @@ class HomeScreen extends StatelessWidget {
   }
 
   List<CategoryModel> Categorylist = [
+    CategoryModel(imgPath: 'assets/images/Business.webp', label: 'Business'),
+    CategoryModel(imgPath: 'assets/images/politics.webp', label: 'politics'),
     CategoryModel(imgPath: 'assets/images/Technology.jpeg', label: 'Technology'),
+    CategoryModel(imgPath: 'assets/images/Science.jpeg', label: 'Science'),
     CategoryModel(imgPath: 'assets/images/sports.jpeg', label: 'sports'),
     CategoryModel(imgPath: 'assets/images/Health.jpeg', label: 'Health'),
-    CategoryModel(imgPath: 'assets/images/Business.webp', label: 'Business'),
-    CategoryModel(imgPath: 'assets/images/Science.jpeg', label: 'Science'),
-    CategoryModel(imgPath: 'assets/images/Business.webp', label: 'Business'),
   ];
 }
