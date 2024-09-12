@@ -8,6 +8,7 @@ import '../../components/CustomCategory.dart';
 import '../../components/CustomDivider.dart';
 import '../../model/NewsModel.dart';
 import '../../model/categoryModel.dart';
+import 'CategoryNews.dart';
 
 class HomeScreen extends StatelessWidget {
   static const String routeName = 'Home Screen';
@@ -39,36 +40,41 @@ class HomeScreen extends StatelessWidget {
                     for (int i = 0; i < Categorylist.length; i++)
                       Padding(
                         padding: const EdgeInsets.all(10),
-                        child: MaterialButton(
-                          padding: EdgeInsets.zero, // Remove default padding
-                          child: SizedBox(
-                            width: 170,
-                            height: 90,
-                            child: Stack(
-                              children: [
-                                Positioned.fill(
-                                  child: Image.asset(
-                                    Categorylist[i].imgPath,
-                                    fit: BoxFit
-                                        .cover, // Ensure the image covers the container
-                                  ),
-                                ),
-                                Center(
-                                  child: Text(
-                                    Categorylist[i].label,
-                                    style: const TextStyle(
-                                      color: ColorManager.colorOffwhite,
-                                      fontSize: 30,
+                        child: Card(
+                          child: MaterialButton(
+                            padding: EdgeInsets.zero, // Remove default padding
+                            child: SizedBox(
+                              width: 170,
+                              height: 100,
+                              child: Stack(
+                                children: [
+                                  Positioned.fill(
+                                    child: Image.asset(
+                                      Categorylist[i].imgPath,
+                                      fit: BoxFit
+                                          .cover, // Ensure the image covers the container
                                     ),
                                   ),
-                                ),
-                              ],
+                                  Center(
+                                    child: Text(
+                                      Categorylist[i].label,
+                                      style: const TextStyle(
+                                        color: ColorManager.colorOffwhite,
+                                        fontSize: 30,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (C) => CategoryNews(category:Categorylist[i].label,)));
+
+                              ApiManger.getNewsCategories(
+                                  category: Categorylist[i].label);
+                            },
                           ),
-                          onPressed: () {
-                            ApiManger.getNewsCategories(
-                                category: Categorylist[i].label);
-                          },
                         ),
                       )
                   ],
@@ -76,8 +82,8 @@ class HomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 5),
               CustomDivider(labelText: 'Top news'),
-
-              Padding(padding: const EdgeInsets.all(15),
+              Padding(
+                padding: const EdgeInsets.all(15),
                 child: FutureBuilder(
                   future: ApiManger.getNewsRandom(), // Asynchronous API call
                   builder: (context, snapshot) {
@@ -86,21 +92,25 @@ class HomeScreen extends StatelessWidget {
                     } else if (snapshot.hasError) {
                       return const Center(child: Text('Error loading news'));
                     } else if (snapshot.hasData) {
-                      var newsModel = snapshot.data as NewsModel; // Cast to NewsModel
-                      var articlesList = newsModel.articles; // Access the articles
+                      var newsModel =
+                          snapshot.data as NewsModel; // Cast to NewsModel
+                      var articlesList =
+                          newsModel.articles; // Access the articles
 
-                      if (articlesList != null && articlesList.isNotEmpty ) {
+                      if (articlesList != null && articlesList.isNotEmpty) {
                         return Column(
                           children: [
-                              for (var article in articlesList)
-                                if (article.urlToImage != null )
-                              CustomCategory(
-                                urlImage: article.urlToImage ?? '', // Use the actual URL for the image
-                                title: article.title ?? 'No title', // Use the title or default text
-                                onPressedShare: () {},
-                                onPressedFav: () {},
-                                iconFav: Icons.favorite_border,
-                              ),
+                            for (var article in articlesList)
+                              if (article.urlToImage != null)
+                                CustomCategory(
+                                  urlImage: article.urlToImage ?? '',
+                                  // Use the actual URL for the image
+                                  title: article.title ?? 'No title',
+                                  // Use the title or default text
+                                  onPressedShare: () {},
+                                  onPressedFav: () {},
+                                  iconFav: Icons.favorite_border,
+                                ),
                           ],
                         );
                       } else {
@@ -111,19 +121,18 @@ class HomeScreen extends StatelessWidget {
                     }
                   },
                 ),
-
               ),
-
             ],
           ),
         ));
   }
 
   List<CategoryModel> Categorylist = [
-    CategoryModel(
-        imgPath: 'assets/images/technology.webp', label: 'technology'),
+    CategoryModel(imgPath: 'assets/images/Technology.jpeg', label: 'Technology'),
     CategoryModel(imgPath: 'assets/images/sports.jpeg', label: 'sports'),
-    CategoryModel(imgPath: 'assets/images/health.jpeg', label: 'health'),
-    CategoryModel(imgPath: 'assets/images/business.jpg', label: 'business'),
+    CategoryModel(imgPath: 'assets/images/Health.jpeg', label: 'Health'),
+    CategoryModel(imgPath: 'assets/images/Business.webp', label: 'Business'),
+    CategoryModel(imgPath: 'assets/images/Science.jpeg', label: 'Science'),
+    CategoryModel(imgPath: 'assets/images/Business.webp', label: 'Business'),
   ];
 }
