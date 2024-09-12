@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 import '../../model/NewsModel.dart';
 import 'countSetup.dart';
 
-// NewsState and its implementations should be defined in countSetup.dart
 class NewsLogic extends Cubit<NewsState> {
   NewsLogic() : super(InitNews());
 
@@ -52,4 +51,6 @@ class NewsLogic extends Cubit<NewsState> {
       emit(NewsErrorState(e.toString()));
     }
   }
+
+
 }
