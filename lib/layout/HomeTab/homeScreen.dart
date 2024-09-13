@@ -8,7 +8,6 @@ import '../../bloc/newstate/countSetup.dart';
 import '../../color_manager.dart';
 import '../../components/CustomNews.dart';
 import '../../components/CustomDivider.dart';
-import '../../model/NewsModel.dart';
 import '../../model/categoryModel.dart';
 import 'CategoryNews.dart';
 import 'NewsDetails.dart';
@@ -106,11 +105,9 @@ class HomeScreen extends StatelessWidget {
                                     for (var article in articlesList)
                                       if (article.urlToImage != null)
                                         CustomNews(
+                                          linkN:article.url != null ? Uri.parse(article.url!) : Uri(),
                                           urlImage: article.urlToImage ?? '',
                                           title: article.title ?? 'No title',
-                                          onPressedShare: () {
-                                            // Implement share functionality
-                                          },
                                           onPressedFav: () {
                                             // Implement favorite functionality
                                           },

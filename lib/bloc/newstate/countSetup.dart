@@ -10,7 +10,6 @@ class Category_news extends NewsState{
 class NewsErrorState extends NewsState{
   NewsErrorState(String error);
 }
-
 class Random_news extends NewsState{
   NewsModel newsResponse;
   Random_news({required this.newsResponse});

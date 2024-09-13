@@ -41,6 +41,7 @@ dependencies:
   flutter_bloc:
   bloc:
   http:
+  social_share:
 
 dev_dependencies:
   flutter_test:

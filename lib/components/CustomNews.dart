@@ -2,11 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:newsapp/color_manager.dart';
+import 'ShareSheetTap.dart';
 
-class CustomNews extends StatelessWidget {
+
+class CustomNews extends ShareSheetTap {
   final String urlImage;
   final String title;
-  final VoidCallback onPressedShare;
   final VoidCallback onPressedFav;
   final VoidCallback onTap;
   final IconData iconFav;
@@ -14,10 +15,10 @@ class CustomNews extends StatelessWidget {
   CustomNews({
     required this.urlImage,
     required this.title,
-    required this.onPressedShare,
     required this.onPressedFav,
     required this.iconFav,
     required this.onTap,
+    required super.linkN,
   });
 
   @override
@@ -55,14 +56,9 @@ class CustomNews extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        IconButton(
-                          onPressed: onPressedShare,
-                          icon: const Icon(
-                            Icons.share,
-                            color: ColorManager.colorOffwhite,
-                            size: 40,
-                          ),
-                        ),
+
+                        ShareSheetTap(linkN: linkN,),
+
                         IconButton(
                           onPressed: onPressedFav,
                           icon: Icon(

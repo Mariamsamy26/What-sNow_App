@@ -3,9 +3,19 @@
 <plist version="1.0">
 <dict>
 
-
     <key>NSAllowsArbitraryLoads</key>
     <true/>
+
+    <key>LSApplicationQueriesSchemes</key>
+    	<array>
+    	<string>instagram-stories</string>
+    	<string>facebook-stories</string>
+    	<string>facebook</string>
+    	<string>instagram</string>
+    	<string>twitter</string>
+    	<string>whatsapp</string>
+        <string>tg</string>
+    	</array>
 
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
