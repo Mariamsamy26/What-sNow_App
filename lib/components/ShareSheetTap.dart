@@ -38,16 +38,14 @@ class ShareSheetTap extends StatelessWidget {
             ), //sms
             ShareModel(
               GoLinke: () {
-                obj.twitterShare(
-                    link: linkN); // Corrected from Widget.link to link
+                obj.telegramShare(link: linkN); // Corrected from Widget.link to link
               },
               imgPath: "assets/images/telegram.webp",
               label: 'telegram',
             ), //telegram
             ShareModel(
               GoLinke: () {
-                obj.whatsAppShare(
-                    link: linkN); // Corrected from Widget.link to link
+                obj.whatsAppShare(link: linkN); // Corrected from Widget.link to link
               },
               imgPath: "assets/images/WhatsApp.png",
               label: 'WhatsApp',
