@@ -64,9 +64,9 @@ class FavororitesTab extends StatelessWidget {
                                         ? Uri.parse(favouriteElement["url"])
                                         : Uri(),
                                     onPressedFav: () {
-                                      // Implement favorite functionality
+                                      DObject.deleteFavouriteElement(title: favouriteElement["title"]);
                                     },
-                                    iconFav: Icons.favorite_border,
+                                    iconFav: Icons.favorite,
                                     onTap: () {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(

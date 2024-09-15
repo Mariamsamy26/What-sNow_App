@@ -30,6 +30,27 @@ class NewsLogic extends Cubit<NewsState> {
     }
   }
 
+  Future<void> getNewsSearch({required String text}) async {
+    try {
+      Uri newUri = Uri.https("newsapi.org", "v2/top-headlines", {
+        "apiKey": "ed597789cb1f40bca350919b6a61f1f7",
+        "q": text,
+      });
+
+      final response = await http.get(newUri);
+
+      if (response.statusCode == 200) {
+        var news = jsonDecode(response.body);
+        NewsModel newsResponse = NewsModel.fromJson(news);
+        emit(Search_news(newsResponse: newsResponse, searchtext: ''));
+      } else {
+        emit(NewsErrorState("Failed to load news"));
+      }
+    } catch (e) {
+      emit(NewsErrorState(e.toString()));
+    }
+  }
+
   Future<void> getNewsRandom() async {
     try {
       Uri newUri = Uri.https("newsapi.org", "v2/everything", {
@@ -51,6 +72,5 @@ class NewsLogic extends Cubit<NewsState> {
       emit(NewsErrorState(e.toString()));
     }
   }
-
 
 }

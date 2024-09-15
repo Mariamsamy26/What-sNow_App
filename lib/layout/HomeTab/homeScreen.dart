@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:newsapp/layout/HomeTab/searchTap.dart';
 
 import '../../bloc/dstate/d_logic.dart';
 import '../../bloc/newstate/NewsLogic.dart';
@@ -44,6 +45,17 @@ class HomeScreen extends StatelessWidget {
                   ),
                   backgroundColor:Theme.of(context).colorScheme.primary,
                   centerTitle: true,
+                  actions: [
+                    IconButton(
+                        onPressed: (){
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (C)=>SearchScreen())
+                          );
+                        },
+                        icon: Icon(Icons.search)
+                    )
+                  ],
                 ),
                 body: Container(
                   color: Theme.of(context).colorScheme.primary,

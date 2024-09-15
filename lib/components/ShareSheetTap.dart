@@ -53,7 +53,7 @@ class ShareSheetTap extends StatelessWidget {
           ];
           return IconButton(
             icon:
-                Icon(Icons.share, color: ColorManager.colorOffwhite, size: 40),
+                Icon(Icons.share, color: Theme.of(context).colorScheme.primary, size: 40),
             onPressed: () {
               showModalBottomSheet(
                 context: context,

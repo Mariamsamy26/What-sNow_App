@@ -29,8 +29,8 @@ class _homeState extends State<home> {
           backgroundColor: Colors.transparent,
           elevation: 0.0,
           currentIndex: currentIndex,
-          selectedItemColor: Theme.of(context).colorScheme.primary,
-          unselectedItemColor: Theme.of(context).colorScheme.secondary,
+          selectedItemColor: Theme.of(context).colorScheme.secondary,
+          unselectedItemColor: Theme.of(context).colorScheme.primary,
           type: BottomNavigationBarType.fixed,
           onTap: (index) {
             currentIndex = index;
