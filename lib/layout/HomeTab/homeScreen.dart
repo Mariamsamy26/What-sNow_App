@@ -53,7 +53,7 @@ class HomeScreen extends StatelessWidget {
                                 builder: (C)=>SearchScreen())
                           );
                         },
-                        icon: Icon(Icons.search)
+                        icon: Icon(Icons.search,size: 35,color: ColorManager.primaryColor,)
                     )
                   ],
                 ),
