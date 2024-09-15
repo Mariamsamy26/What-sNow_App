@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
 
 import '../../model/NewsModel.dart';
-import 'countSetup.dart';
+import 'NewsState.dart';
 
 class NewsLogic extends Cubit<NewsState> {
   NewsLogic() : super(InitNews());

@@ -6,22 +6,23 @@ import '../color_manager.dart';
 
 class CustomDivider extends StatelessWidget {
   late final String labelText;
-
+  final Color colorr;
 
   CustomDivider({
     required this.labelText,
-  }) ;
+    this.colorr = ColorManager.colorblueblack,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:const EdgeInsets.only(left: 10.0,right: 10),
+      padding: const EdgeInsets.only(left: 10.0, right: 10),
       child: Row(
         children: [
-          const Expanded(
+          Expanded(
             child: Divider(
               thickness: 5,
-              color: ColorManager.colorblueblack,
+              color: colorr,
               height: 50,
             ),
           ),
@@ -32,13 +33,14 @@ class CustomDivider extends StatelessWidget {
               style: GoogleFonts.abhayaLibre(
                 fontWeight: FontWeight.bold,
                 fontSize: 50,
-                color: ColorManager.colorblueblack,
-              ),),
+                color: colorr,
+              ),
+            ),
           ),
-          const Expanded(
+          Expanded(
             child: Divider(
               thickness: 5,
-              color: ColorManager.colorblueblack,
+              color: colorr,
               height: 50,
             ),
           ),

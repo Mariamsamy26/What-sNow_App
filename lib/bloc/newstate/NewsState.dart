@@ -15,3 +15,4 @@ class Random_news extends NewsState{
   Random_news({required this.newsResponse});
 }
 class Get_newsD extends NewsState{}
+class FavState extends NewsState{}

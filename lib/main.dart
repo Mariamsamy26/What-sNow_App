@@ -1,9 +1,28 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'bloc/dstate/d_logic.dart';
+import 'bloc/newstate/NewsLogic.dart';
+import 'bloc/shareState/ShareLogic.dart';
+import 'firebase_options.dart';
 import 'home.dart';
+import 'layout/registration/authScreen.dart';
+import 'layout/settingTap/theme.dart';
 
-void main() {
-  runApp(const MyApp());
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform
+  );
+  runApp(MultiBlocProvider(
+    providers: [
+      BlocProvider<DLogic>(create: (context) => DLogic(),),
+      BlocProvider<NewsLogic>(create: (context) => NewsLogic(),),
+      BlocProvider<ShareLogic>(create: (context) => ShareLogic(),),
+    ],
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -13,9 +32,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: lighttheme,
+      darkTheme: darktheme,
       initialRoute: home.rountName,
       routes: {
-        home.rountName: (context) => home(),
+        home.rountName: (context) => authpage(),
       },
     );
   }

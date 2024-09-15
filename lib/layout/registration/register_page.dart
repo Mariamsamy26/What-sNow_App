@@ -8,40 +8,46 @@ import '../../components/my_button.dart';
 import '../../components/my_textfield.dart';
 
 
-
-class LoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
   final Function()? onTap;
-  LoginPage({super.key, required this.onTap});
+  RegisterPage({super.key, required this.onTap});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   // text editing controllers
   final emailController = TextEditingController();
 
   final passwordController = TextEditingController();
 
+  final confirmpasswordController = TextEditingController();
+
   // sign user in method
-  void signUserIn() async{
+  void signUserUp() async{
 
     showDialog(context: context, builder: (context) {
       return Center(
         child: CircularProgressIndicator(),
       );
     });
-try{
-  await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: emailController.text,
-      password: passwordController.text
-  );
-  Navigator.pop(context);
+    try{
+      if(passwordController.text == confirmpasswordController.text){
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: emailController.text,
+            password: passwordController.text
+        );
+      }
+      else {
+        showErrorMessage("Password And Confirm Password Don't Match!");
+      }
+      Navigator.pop(context);
 
-} on FirebaseAuthException catch (e) {
-  Navigator.pop(context);
-  showErrorMessage(e.code);
-}
+    } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
+      showErrorMessage(e.code);
+    }
 
 
   }
@@ -50,13 +56,12 @@ try{
     showDialog(
       context: context,
       builder: (context) {
-       return const AlertDialog(
+        return const AlertDialog(
           title: Text("Incorrect Email"),
         );
       },
     );
   }
-
 
 
 
@@ -71,6 +76,8 @@ try{
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
 
+
+                // logo
                 Text(
                   "what's new",
                   style: GoogleFonts.sevillana(
@@ -81,7 +88,7 @@ try{
                 ),
 
                 SizedBox(height: 35),
-            
+
                 // logo
                 Icon(
                   FontAwesomeIcons.earth ,
@@ -90,61 +97,62 @@ try{
                 ),
 
                 SizedBox(height: 50),
-
-            
-                // welcome back, you've been missed!
                 Text(
-                  'Welcome back you\'ve been missed!',
+                  'Let\'s create an account for you!',
                   style: TextStyle(
                     color: Colors.grey[700],
                     fontSize: 16,
                   ),
                 ),
-            
+
                 SizedBox(height: 20),
-            
+
                 // username textfield
                 MyTextField(
                   controller: emailController,
                   hintText: 'Email',
                   obscureText: false,
                 ),
-            
+
                 SizedBox(height: 10),
-            
+
                 // password textfield
                 MyTextField(
                   controller: passwordController,
                   hintText: 'Password',
                   obscureText: true,
                 ),
-            
+
                 SizedBox(height: 10),
-            
+
+                MyTextField(
+                  controller: confirmpasswordController,
+                  hintText: 'Confirm Password',
+                  obscureText: true,
+                ),
+
+                SizedBox(height: 10),
+
                 // forgot password?
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text(
-                        'Forgot Password?',
-                        style: TextStyle(color: Colors.grey[600]),
-                      ),
                     ],
                   ),
                 ),
-            
+
                 SizedBox(height: 20),
-            
+
                 // sign in button
                 MyButton(
-                  text: "Sign In",
-                  onTap: signUserIn,
+                  text: "Sign Up",
+                  onTap: signUserUp,
                 ),
-            
+
                 SizedBox(height: 30),
-            
+
                 // or continue with
                 Padding(
                   padding:  EdgeInsets.symmetric(horizontal: 25.0),
@@ -156,7 +164,7 @@ try{
                           color: Colors.grey[400],
                         ),
                       ),
-            
+
                       Expanded(
                         child: Divider(
                           thickness: 0.5,
@@ -166,22 +174,22 @@ try{
                     ],
                   ),
                 ),
-            
+
                 SizedBox(height: 20),
-            
+
                 // not a member? register now
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Not a member?',
+                      'Already Have An Account?',
                       style: TextStyle(color: Colors.grey[700]),
                     ),
                     SizedBox(width: 4),
                     GestureDetector(
                       onTap: widget.onTap,
                       child: Text(
-                        'Register now',
+                        'Login now',
                         style: TextStyle(
                           color: Colors.blue,
                           fontWeight: FontWeight.bold,

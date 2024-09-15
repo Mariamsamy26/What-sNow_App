@@ -42,6 +42,10 @@ dependencies:
   bloc:
   http:
   social_share:
+  sqflite:
+  firebase_core:
+  firebase_auth:
+  font_awesome_flutter:
 
 dev_dependencies:
   flutter_test:

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../bloc/newstate/countLogic.dart';
-import '../../bloc/newstate/countSetup.dart';
+import '../../bloc/newstate/NewsLogic.dart';
+import '../../bloc/newstate/NewsState.dart';
 import '../../color_manager.dart';
 import '../../components/CustomNews.dart';
 import 'NewsDetails.dart';
