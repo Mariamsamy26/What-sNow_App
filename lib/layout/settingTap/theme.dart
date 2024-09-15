@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import '../../../color_manager.dart';
 ThemeData darktheme = ThemeData(
   brightness: Brightness.dark,
-  colorScheme: ColorScheme.dark(
-    background: Color.fromRGBO(5, 18, 56, 0.80),
-    primary: Colors.grey[900]!,
-    secondary: Colors.white!
+  colorScheme: const ColorScheme.dark(
+    // background: ColorManager.colorblueblack,
+    primary: ColorManager.colorblueblack,
+    secondary: ColorManager.colorOffwhite
   )
 );
 ThemeData lighttheme = ThemeData(
     brightness: Brightness.light,
-    colorScheme: ColorScheme.light(
-        background: ColorManager.colorOffwhite,
-        primary: Colors.grey[900]!,
-        secondary: Colors.grey[700]!
+    colorScheme: const ColorScheme.light(
+        // background: ColorManager.colorOffwhite,
+        primary: ColorManager.colorOffwhite,
+        secondary: ColorManager.colorblueblack
     )
 );
 ThemeMode themeMode = ThemeMode.light; // Default theme mode

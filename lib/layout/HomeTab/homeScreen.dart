@@ -2,9 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:newsapp/bloc/newstate/countLogic.dart';
 
-import '../../bloc/newstate/countSetup.dart';
+import '../../bloc/dstate/d_logic.dart';
+import '../../bloc/newstate/NewsLogic.dart';
+import '../../bloc/newstate/NewsState.dart';
 import '../../color_manager.dart';
 import '../../components/CustomNews.dart';
 import '../../components/CustomDivider.dart';
@@ -17,12 +18,20 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => NewsLogic()..getNewsRandom(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => NewsLogic()..getNewsRandom(),
+        ),
+        BlocProvider(
+          create: (context) => DLogic()..createDatabaseAndTable(),
+        ),
+      ],
       child: BlocConsumer<NewsLogic, NewsState>(
           listener: (context, state) {},
           builder: (context, state) {
             NewsLogic obj = BlocProvider.of(context);
+            DLogic DObject =BlocProvider.of(context);
             return Scaffold(
                 appBar: AppBar(
                   title: Text(
@@ -33,11 +42,11 @@ class HomeScreen extends StatelessWidget {
                       color: ColorManager.primaryColor,
                     ),
                   ),
-                  backgroundColor: ColorManager.colorOffwhite,
+                  backgroundColor:Theme.of(context).colorScheme.primary,
                   centerTitle: true,
                 ),
                 body: Container(
-                  color: ColorManager.colorOffwhite, // Set background color
+                  color: Theme.of(context).colorScheme.primary,
                   child: ListView(
                     children: [
                       CustomDivider(labelText: 'CATEGORIES'),
@@ -65,7 +74,7 @@ class HomeScreen extends StatelessWidget {
                                             Categorylist[i].label,
                                             style: const TextStyle(
                                               color:
-                                                  ColorManager.colorOffwhite,
+                                              ColorManager.colorOffwhite,
                                               fontSize: 30,
                                             ),
                                           ),
@@ -76,10 +85,10 @@ class HomeScreen extends StatelessWidget {
                                   onPressed: () {
                                     Navigator.of(context)
                                         .push(MaterialPageRoute(
-                                            builder: (C) => CategoryNews(
-                                                  category:
-                                                      Categorylist[i].label,
-                                                )));
+                                        builder: (C) => CategoryNews(
+                                          category:
+                                          Categorylist[i].label,
+                                        )));
                                   },
                                 ),
                               )
@@ -105,14 +114,22 @@ class HomeScreen extends StatelessWidget {
                                     for (var article in articlesList)
                                       if (article.urlToImage != null)
                                         CustomNews(
-                                          linkN:article.url != null ? Uri.parse(article.url!) : Uri(),
                                           urlImage: article.urlToImage ?? '',
                                           title: article.title ?? 'No title',
-                                          onPressedFav: () {
-                                            // Implement favorite functionality
+                                          linkN:article.url != null ? Uri.parse(article.url!) : Uri(),
+                                          onPressedFav: () async {
+                                            if(!await DObject.searchByTitle(title: article.title.toString())){
+                                              DObject.insertFavouriteElement(title: article.title.toString(), url: article.url.toString(), imageUrl: article.urlToImage.toString());
+                                            }
+                                            else
+                                            {
+                                              DObject.deleteFavouriteElement(title: article.title.toString());
+                                            }
                                           },
+
                                           iconFav: Icons.favorite_border,
                                           onTap: () {
+                                            DObject.insertHistoryElement(title: article.title.toString(), url: article.url.toString(), imageUrl: article.urlToImage.toString());
                                             Navigator.of(context).push(
                                               MaterialPageRoute(
                                                 builder: (context) => NewsDetails(

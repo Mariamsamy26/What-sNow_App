@@ -32,11 +32,11 @@ class CategoryNews extends StatelessWidget {
                     color: ColorManager.primaryColor,
                   ),
                 ),
-                backgroundColor: ColorManager.colorOffwhite,
+                backgroundColor:  Theme.of(context).colorScheme.primary,
                 centerTitle: true,
               ),
               body: Container(
-                color: ColorManager.colorOffwhite,
+                color:  Theme.of(context).colorScheme.primary,
                 child: ListView(
                   children: [
                     Padding(

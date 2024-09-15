@@ -16,7 +16,7 @@ class home extends StatefulWidget {
 
 class _homeState extends State<home> {
   int currentIndex = 0;
-
+//Theme.of(context).colorScheme.primary.secondary
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,8 +29,8 @@ class _homeState extends State<home> {
           backgroundColor: Colors.transparent,
           elevation: 0.0,
           currentIndex: currentIndex,
-          selectedItemColor: ColorManager.colorblueblack,
-          unselectedItemColor: ColorManager.colorOffwhite,
+          selectedItemColor: Theme.of(context).colorScheme.primary,
+          unselectedItemColor: Theme.of(context).colorScheme.secondary,
           type: BottomNavigationBarType.fixed,
           onTap: (index) {
             currentIndex = index;

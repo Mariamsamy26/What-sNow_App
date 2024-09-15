@@ -63,7 +63,7 @@ class CustomNews extends ShareSheetTap {
                           onPressed: onPressedFav,
                           icon: Icon(
                             iconFav,
-                            color: ColorManager.colorOffwhite,
+                            color:  Theme.of(context).colorScheme.primary,
                             size: 40,
                           ),
                         ),

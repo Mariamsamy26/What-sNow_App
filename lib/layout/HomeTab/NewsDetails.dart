@@ -22,16 +22,13 @@ class NewsDetails extends StatelessWidget {
               color: ColorManager.primaryColor,
             ),
           ),
-          backgroundColor: ColorManager.colorOffwhite,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           centerTitle: true,
         ),
         body: WebViewWidget(
             controller: controller..loadRequest(Uri.parse(url))
         )
-        // WebView(
-        //   initialUrl: 'https://example.com',
-        //   javascriptMode: JavascriptMode.unrestricted,
-        // ),
+
         );
   }
 }

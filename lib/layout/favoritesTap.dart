@@ -29,11 +29,11 @@ class FavororitesTab extends StatelessWidget {
                     color: ColorManager.primaryColor,
                   ),
                 ),
-                backgroundColor: ColorManager.colorOffwhite,
+                backgroundColor: Theme.of(context).colorScheme.primary,
                 centerTitle: true,
               ),
               body: Container(
-                color: ColorManager.colorOffwhite,
+                color: Theme.of(context).colorScheme.primary,
                 width: double.infinity,
                 height: double.infinity,
                 child: DObject.favouriteList.isEmpty
@@ -43,7 +43,7 @@ class FavororitesTab extends StatelessWidget {
                           style: GoogleFonts.abhayaLibre(
                             fontWeight: FontWeight.bold,
                             fontSize: 30,
-                            color: ColorManager.colorblueblack,
+                            color: Theme.of(context).colorScheme.secondary,
                           ),
                         ),
                       )

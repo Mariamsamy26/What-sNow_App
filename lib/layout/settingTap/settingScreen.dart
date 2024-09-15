@@ -6,8 +6,8 @@ import '../../color_manager.dart';
 
 class SettingScreen extends StatelessWidget {
   static const String routeName = 'setting Screen';
-  Color darkmode =  Color.fromRGBO(5, 18, 56, 0.80);
-  Color lightmode = Color.fromRGBO(244, 235, 226, 1);
+  Color darkmode =  ColorManager.colorblueblack;
+  Color lightmode = ColorManager.colorOffwhite;
 
 
   void _logout(BuildContext context) {
@@ -40,9 +40,9 @@ class SettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         centerTitle: true,
         title:Text(
           "Settings",

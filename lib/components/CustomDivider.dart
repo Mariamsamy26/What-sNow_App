@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../color_manager.dart';
 
 class CustomDivider extends StatelessWidget {
-  late final String labelText;
-  final Color colorr;
+  final String labelText;
+  final Color? colorr;
 
   CustomDivider({
     required this.labelText,
-    this.colorr = ColorManager.colorblueblack,
+    this.colorr,
   });
 
   @override
   Widget build(BuildContext context) {
+    // Access the theme color in the build method
+    final Color dividerColor = colorr ?? Theme.of(context).colorScheme.secondary;
+
     return Padding(
       padding: const EdgeInsets.only(left: 10.0, right: 10),
       child: Row(
@@ -22,25 +24,25 @@ class CustomDivider extends StatelessWidget {
           Expanded(
             child: Divider(
               thickness: 5,
-              color: colorr,
+              color: dividerColor,
               height: 50,
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text(
               labelText,
               style: GoogleFonts.abhayaLibre(
                 fontWeight: FontWeight.bold,
                 fontSize: 50,
-                color: colorr,
+                color: dividerColor,
               ),
             ),
           ),
           Expanded(
             child: Divider(
               thickness: 5,
-              color: colorr,
+              color: dividerColor,
               height: 50,
             ),
           ),
