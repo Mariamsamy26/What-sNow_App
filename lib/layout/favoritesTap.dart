@@ -66,7 +66,7 @@ class FavororitesTab extends StatelessWidget {
                                     onPressedFav: () {
                                       DObject.deleteFavouriteElement(title: favouriteElement["title"]);
                                     },
-                                    iconFav: Icons.favorite,
+                                    iconFavFuture: DObject.searchByTitle(title: favouriteElement["title"]),
                                     onTap: () {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(

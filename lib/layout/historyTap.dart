@@ -37,7 +37,7 @@ class HistoryTab extends StatelessWidget {
                         DObject.clearHistory();
                       },
                       icon: Icon(Icons.delete_forever
-                      ,color: ColorManager.primaryColor
+                        ,color: ColorManager.primaryColor
                         ,size: 40,))
                 ],
               ),
@@ -68,7 +68,7 @@ class HistoryTab extends StatelessWidget {
                               onPressedFav: () {
                                 DObject.deleteHistoryElement(title: DObject.historyList[i]["title"]);
                               },
-                              iconFav: Icons.delete,
+                              iconFavFuture: DObject.searchByTitle(title: DObject.historyList[i]["title"].toString()),
                               onTap: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(

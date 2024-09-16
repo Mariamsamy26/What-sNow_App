@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../bloc/dstate/d_logic.dart';
 import '../../bloc/newstate/NewsLogic.dart';
 import '../../bloc/newstate/NewsState.dart';
 import '../../color_manager.dart';
@@ -15,13 +16,20 @@ class CategoryNews extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => NewsLogic()..getNewsCategories(category: category),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => NewsLogic()..getNewsRandom(),
+        ),
+        BlocProvider(
+          create: (context) => DLogic()..createDatabaseAndTable(),
+        ),
+      ],
       child: BlocConsumer<NewsLogic, NewsState>(
           listener: (context, state) {},
           builder: (context, state) {
             NewsLogic obj = BlocProvider.of(context);
-
+            DLogic DObject =BlocProvider.of(context);
             return Scaffold(
               appBar: AppBar(
                 title: Text(
@@ -61,7 +69,7 @@ class CategoryNews extends StatelessWidget {
                                         onPressedFav: () {
                                           // Implement favorite functionality
                                         },
-                                        iconFav: Icons.favorite_border,
+                                        iconFavFuture: DObject.searchByTitle(title: article.title.toString()),
                                         onTap: () {
                                           Navigator.of(context).push(
                                             MaterialPageRoute(

@@ -138,8 +138,7 @@ class HomeScreen extends StatelessWidget {
                                               DObject.deleteFavouriteElement(title: article.title.toString());
                                             }
                                           },
-
-                                          iconFav: Icons.favorite_border,
+                                          iconFavFuture: DObject.searchByTitle(title: article.title.toString()),
                                           onTap: () {
                                             DObject.insertHistoryElement(title: article.title.toString(), url: article.url.toString(), imageUrl: article.urlToImage.toString());
                                             Navigator.of(context).push(

@@ -10,15 +10,17 @@ class CustomNews extends ShareSheetTap {
   final String title;
   final VoidCallback onPressedFav;
   final VoidCallback onTap;
-  final IconData iconFav;
+  final bool is_history;
+  Future<bool> iconFavFuture;
 
-  CustomNews({
+  CustomNews( {
     required this.urlImage,
     required this.title,
     required this.onPressedFav,
-    required this.iconFav,
     required this.onTap,
     required super.linkN,
+    this.is_history=false,
+    required this.iconFavFuture,
   });
 
   @override
@@ -61,10 +63,32 @@ class CustomNews extends ShareSheetTap {
 
                         IconButton(
                           onPressed: onPressedFav,
-                          icon: Icon(
-                            iconFav,
-                            color:  Theme.of(context).colorScheme.primary,
-                            size: 40,
+                          icon: FutureBuilder(
+                            future: iconFavFuture,
+                            builder: (context, snapshot) {
+                              if(is_history){
+                                return const Icon(
+                                    Icons.delete,
+                                    color: ColorManager.colorOffwhite,
+                                    size: 40
+                                );
+                              }
+                              else{
+                                if (snapshot.hasData) {
+                                  return Icon(
+                                    snapshot.data ?? false ? Icons.favorite : Icons.favorite_border,
+                                    color: ColorManager.colorOffwhite,
+                                    size: 40,
+                                  );
+                                } else {
+                                  return Icon(
+                                    snapshot.data ?? false ? Icons.favorite_border : Icons.favorite_border,
+                                    color: ColorManager.colorOffwhite,
+                                    size: 40,
+                                  ); // Default icon
+                                }
+                              }
+                            },
                           ),
                         ),
                       ],

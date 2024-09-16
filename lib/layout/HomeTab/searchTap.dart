@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../bloc/dstate/d_logic.dart';
 import '../../bloc/newstate/NewsLogic.dart';
 import '../../bloc/newstate/NewsState.dart';
 import '../../color_manager.dart';
@@ -44,6 +45,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    DLogic DObject =BlocProvider.of(context);
     return SafeArea(
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -109,7 +111,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                   onPressedFav: () {
                                     // Implement favorite functionality
                                   },
-                                  iconFav: Icons.favorite_border,
+                                  iconFavFuture: DObject.searchByTitle(title: article.title.toString()),
                                   onTap: () {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
