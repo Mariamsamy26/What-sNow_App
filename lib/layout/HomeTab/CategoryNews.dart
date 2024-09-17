@@ -76,13 +76,19 @@ class CategoryNews extends StatelessWidget {
                                     : Uri(),
                                 urlImage: article.urlToImage ?? '',
                                 title: article.title ?? 'No title',
-                                onPressedFav: () {
-                                  // Implement favorite functionality
+                                onPressedFav: () async {
+                                  if(!await DObject.searchByTitle(title: article.title.toString())){
+                                    DObject.insertFavouriteElement(title: article.title.toString(), url: article.url.toString(), imageUrl: article.urlToImage.toString());
+                                  }
+                                  else
+                                  {
+                                    DObject.deleteFavouriteElement(title: article.title.toString());
+                                  }
                                 },
-                                iconFavFuture: DObject.searchByTitle(
-                                  title: article.title ?? '',
-                                ),
+                                iconFavFuture: DObject.searchByTitle(title: article.title.toString()),
                                 onTap: () {
+                                  DObject.insertHistoryElement(title: article.title.toString(), url: article.url.toString(), imageUrl: article.urlToImage.toString());
+
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) => NewsDetails(

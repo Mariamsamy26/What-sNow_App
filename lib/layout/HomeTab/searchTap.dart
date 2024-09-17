@@ -108,11 +108,19 @@ class _SearchScreenState extends State<SearchScreen> {
                                   linkN: article.url != null ? Uri.parse(article.url!) : Uri(),
                                   urlImage: article.urlToImage ?? '',
                                   title: article.title ?? 'No title',
-                                  onPressedFav: () {
-                                    // Implement favorite functionality
+                                  onPressedFav: () async {
+                                    if(!await DObject.searchByTitle(title: article.title.toString())){
+                                      DObject.insertFavouriteElement(title: article.title.toString(), url: article.url.toString(), imageUrl: article.urlToImage.toString());
+                                    }
+                                    else
+                                    {
+                                      DObject.deleteFavouriteElement(title: article.title.toString());
+                                    }
                                   },
                                   iconFavFuture: DObject.searchByTitle(title: article.title.toString()),
                                   onTap: () {
+                                    DObject.insertHistoryElement(title: article.title.toString(), url: article.url.toString(), imageUrl: article.urlToImage.toString());
+
                                     for(int i=0;i<articlesList.length;i++) {
                                       articlesList.removeAt(i);
                                     }

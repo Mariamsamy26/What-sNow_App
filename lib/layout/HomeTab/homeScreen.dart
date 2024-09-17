@@ -95,7 +95,6 @@ class HomeScreen extends StatelessWidget {
                                     ),
                                   ),
                                   onPressed: () {
-                                    print("bbbb${Categorylist[i].label}");
                                     Navigator.of(context)
                                         .push(MaterialPageRoute(
                                         builder: (C) => CategoryNews(
