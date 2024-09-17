@@ -73,4 +73,5 @@ class NewsLogic extends Cubit<NewsState> {
     }
   }
 
+
 }
