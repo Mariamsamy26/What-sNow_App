@@ -113,6 +113,9 @@ class _SearchScreenState extends State<SearchScreen> {
                                   },
                                   iconFavFuture: DObject.searchByTitle(title: article.title.toString()),
                                   onTap: () {
+                                    for(int i=0;i<articlesList.length;i++) {
+                                      articlesList.removeAt(i);
+                                    }
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) => NewsDetails(

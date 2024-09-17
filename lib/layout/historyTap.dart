@@ -36,7 +36,7 @@ class HistoryTab extends StatelessWidget {
                       onPressed: (){
                         DObject.clearHistory();
                       },
-                      icon: Icon(Icons.delete_forever
+                      icon: const Icon(Icons.delete_forever
                         ,color: ColorManager.primaryColor
                         ,size: 40,))
                 ],
@@ -64,7 +64,7 @@ class HistoryTab extends StatelessWidget {
                             CustomNews(
                               urlImage: DObject.historyList[i]["imageUrl"] ?? '',
                               title: DObject.historyList[i]["title"] ?? 'No title',
-                              linkN: DObject.historyList[i]["url"]?? '',
+                              linkN: Uri.parse(DObject.historyList[i]["url"] )!,
                               onPressedFav: () {
                                 DObject.deleteHistoryElement(title: DObject.historyList[i]["title"]);
                               },

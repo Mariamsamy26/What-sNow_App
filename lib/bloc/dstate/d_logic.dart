@@ -2,38 +2,36 @@ import 'package:bloc/bloc.dart';
 import 'package:sqflite/sqflite.dart';
 import 'd_state.dart';
 
+
 class DLogic extends Cubit<DState> {
   List<Map> historyList = [];
   List<Map> favouriteList = [];
-  late String userID = "";
   late Database db;
 
-  DLogic() : super(InitI());
-
-  void initDB() async {
-    if (userID.isNotEmpty) {
-      createDatabaseAndTable();
-    } else {
-      print("userID is not set");
-    }
-  }
+  DLogic() :super(InitI());
 
   createDatabaseAndTable() async {
     await openDatabase(
         "u.db",
-        version: 7, // increment the version number
+        version: 6,
         onCreate: (Database d, int i) async {
-          await d.execute(
-              'CREATE TABLE history (id INTEGER PRIMARY KEY, title TEXT, url TEXT, imageUrl TEXT, userID TEXT)'
+          await d.execute
+            (
+              'create table history '
+                  '(id integer primary key,'
+                  'title text,url text,imageUrl text)'
           );
           print("history Created !");
-          await d.execute(
-              'CREATE TABLE favourite (id INTEGER PRIMARY KEY, title TEXT, url TEXT, imageUrl TEXT, userID TEXT)'
+          await d.execute
+            (
+              'create table favourite '
+                  '(id integer primary key,'
+                  'title text,url text,imageUrl text)'
           );
           print("favourite Created !");
         },
         onUpgrade: (Database d, int i, int m) async {
-          // handle upgrades here
+
         },
         onOpen: (Database d) {
           print("history database open");
@@ -54,16 +52,19 @@ class DLogic extends Cubit<DState> {
     });
   }
 
-  insertHistoryElement({
+  insertHistoryElement
+      ({
     required String title,
     required String url,
-    required String imageUrl,
+    required String imageUrl
   }) async {
     await db.transaction((txn) async {
       txn.rawInsert(
-          "INSERT INTO history (title, url, imageUrl, userID) VALUES ('$title', '$url', '$imageUrl', '$userID')"
+          "insert into history (title,url,imageUrl)"
+              " values ('$title','$url','$imageUrl') "
       ).then((value) {
-        print("history element Inserted Number $value");
+        print(" history element Inserted Number  $value");
+        print(historyList);
         emit(InsertHistoryElement());
         showHistory().then((value) {
           historyList = value;
@@ -74,11 +75,12 @@ class DLogic extends Cubit<DState> {
   }
 
   Future<List<Map>> showHistory() async {
-    return await db.rawQuery("SELECT * FROM history WHERE userID = ?", [userID]);
+    return await db.rawQuery("select * from history");
   }
 
   deleteHistoryElement({required String title}) async {
-    await db.rawDelete("DELETE FROM history WHERE title = ? AND userID = ?", [title, userID]).then((value) {
+    await db.rawDelete("delete from history where title = ?", [title]).then((
+        value) {
       print("history element Deleted $value");
       emit(DeleteHistoryElement());
       showHistory().then((value) {
@@ -88,8 +90,9 @@ class DLogic extends Cubit<DState> {
     });
   }
 
-  clearHistory() async {
-    await db.rawDelete("DELETE FROM history WHERE userID = ?", [userID]).then((value) {
+  clearHistory() async
+  {
+    await db.rawDelete("delete from history").then((value) {
       print("history cleared");
       emit(DeleteHistoryElement());
       showHistory().then((value) {
@@ -99,16 +102,18 @@ class DLogic extends Cubit<DState> {
     });
   }
 
-  insertFavouriteElement({
+  insertFavouriteElement
+      ({
     required String title,
     required String url,
-    required String imageUrl,
+    required String imageUrl
   }) async {
     await db.transaction((txn) async {
       txn.rawInsert(
-          "INSERT INTO favourite (title, url, imageUrl, userID) VALUES ('$title', '$url', '$imageUrl', '$userID')"
+          "insert into favourite (title,url,imageUrl)"
+              " values ('$title','$url','$imageUrl') "
       ).then((value) {
-        print("favourite element Inserted Number $value");
+        print(" favourite element Inserted Number  $value");
         emit(InsertFavouriteElement());
         showFavourite().then((value) {
           favouriteList = value;
@@ -119,11 +124,12 @@ class DLogic extends Cubit<DState> {
   }
 
   Future<List<Map>> showFavourite() async {
-    return await db.rawQuery("SELECT * FROM favourite WHERE userID = ?", [userID]);
+    return await db.rawQuery("select * from favourite");
   }
 
   deleteFavouriteElement({required String title}) async {
-    await db.rawDelete("DELETE FROM favourite WHERE title = ? AND userID = ?", [title, userID]).then((value) {
+    await db.rawDelete("delete from favourite where title = ?", [title]).then((
+        value) {
       print("favourite element Deleted $value");
       emit(DeleteFavouriteElement());
       showFavourite().then((value) {
@@ -136,28 +142,12 @@ class DLogic extends Cubit<DState> {
   // Function to check if a row with a specific title exists
   Future<bool> searchByTitle({required String title}) async {
     final List<Map<String, dynamic>> ans = await db.rawQuery(
-        "SELECT * FROM favourite WHERE title = ? AND userID = ?", [title, userID]);
-    print("this favourite is ${ans.isNotEmpty}");
+        "SELECT * FROM favourite WHERE title = ?", [title]);
+    print(" this favourite is ${ans.isNotEmpty}");
     showFavourite().then((value) {
       favouriteList = value;
       emit(LoadFavouriteList());
     });
     return ans.isNotEmpty;
-  }
-  Future<int?> countHistoryRowsForUser() async {
-    final count = await db.rawQuery("SELECT COUNT(*) FROM history WHERE userID = ?", [userID]);
-    print("$count the lists are : $historyList" );
-    return count.first["COUNT(*)"] as int ;
-  }
-  Future<int?> countFavouriteRowsForUser() async {
-    final count = await db.rawQuery("SELECT COUNT(*) FROM favourite WHERE userID = ?", [userID]);
-    print("$count the lists are : $historyList" );
-    return count.first["COUNT(*)"] as int ;
-  }
-
-  void setUserID(String newUserID) {
-    userID = newUserID;
-    emit(SetUserID());
-    initDB();
   }
 }

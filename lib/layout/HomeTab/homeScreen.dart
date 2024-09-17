@@ -49,8 +49,8 @@ class HomeScreen extends StatelessWidget {
                     IconButton(
                         onPressed: (){
                           Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (C)=>SearchScreen())
+                              MaterialPageRoute(
+                                  builder: (C)=>SearchScreen())
                           );
                         },
                         icon: Icon(Icons.search,size: 35,color: ColorManager.primaryColor,)
