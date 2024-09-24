@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../bloc/themestate/themeLogic.dart';
 import '../../color_manager.dart';
 
 class SettingScreen extends StatelessWidget {
@@ -57,36 +59,36 @@ class SettingScreen extends StatelessWidget {
       body: ListView(
         children: [
           ListTile(
-            leading: Icon(Icons.source),
-            title: Text('Source'),
+            leading:const Icon(Icons.source),
+            title:const Text('Source'),
             onTap: () {
               // Navigate to Account settings
             },
           ),
           ListTile(
-            leading: Icon(Icons.sunny),
-            title: Text(' Light Mode'),
-            onTap: () {//light mode
-              darkmode = Theme.of(context).colorScheme.background;
+            leading: const Icon(Icons.sunny),
+            title: const Text(' Light Mode'),
+            onTap: () {
+              context.read<ThemeLogic>().themeSwitchToLight();
             },
           ),
           ListTile(
-              leading: Icon(Icons.motion_photos_on_outlined),
-              title: Text("Dark Mode"),
+              leading: const Icon(Icons.nightlight),
+              title: const Text("Dark Mode"),
               onTap: (){
-                lightmode = Theme.of(context).colorScheme.secondary;
+                context.read<ThemeLogic>().themeSwitchToDark();
               }
           ),
           ListTile(
-            leading: Icon(Icons.help_outline),
-            title: Text('Help and Support'),
+            leading: const Icon(Icons.help),
+            title: const Text('Help and Support'),
             onTap: () {
               // Navigate to Help and Support settings
             },
           ),
           ListTile(
-            leading: Icon(Icons.logout),
-            title: Text('Log out'),
+            leading: const Icon(Icons.logout),
+            title: const Text('Log out'),
             onTap: () {
               _logout(context);
 
