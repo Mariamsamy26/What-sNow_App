@@ -4,23 +4,20 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:newsapp/color_manager.dart';
 import 'ShareSheetTap.dart';
 
-
 class CustomNews extends ShareSheetTap {
   final String urlImage;
   final String title;
-  final VoidCallback onPressedFav;
   final VoidCallback onTap;
-  final bool is_history;
-  Future<bool> iconFavFuture;
+  final IconData iconSec;
+  final VoidCallback onPressedSec;
 
-  CustomNews( {
+  CustomNews({
     required this.urlImage,
     required this.title,
-    required this.onPressedFav,
     required this.onTap,
     required super.linkN,
-    this.is_history=false,
-    required this.iconFavFuture,
+    required this.iconSec,
+    required this.onPressedSec,
   });
 
   @override
@@ -49,7 +46,7 @@ class CustomNews extends ShareSheetTap {
                       ),
                     ),
                     errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
+                    const Icon(Icons.error),
                   ),
 
                   // Share and Favorite icons
@@ -58,37 +55,13 @@ class CustomNews extends ShareSheetTap {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-
-                        ShareSheetTap(linkN: linkN,),
-
+                        ShareSheetTap(linkN: linkN),
                         IconButton(
-                          onPressed: onPressedFav,
-                          icon: FutureBuilder(
-                            future: iconFavFuture,
-                            builder: (context, snapshot) {
-                              if(is_history){
-                                return const Icon(
-                                    Icons.delete,
-                                    color: ColorManager.colorOffwhite,
-                                    size: 40
-                                );
-                              }
-                              else{
-                                if (snapshot.hasData) {
-                                  return Icon(
-                                    snapshot.data ?? false ? Icons.favorite : Icons.favorite_border,
-                                    color: ColorManager.colorOffwhite,
-                                    size: 40,
-                                  );
-                                } else {
-                                  return Icon(
-                                    snapshot.data ?? false ? Icons.favorite_border : Icons.favorite_border,
-                                    color: ColorManager.colorOffwhite,
-                                    size: 40,
-                                  ); // Default icon
-                                }
-                              }
-                            },
+                          onPressed: onPressedSec,
+                          icon: Icon(
+                            iconSec,
+                            color: Theme.of(context).colorScheme.primary,
+                            size: 40,
                           ),
                         ),
                       ],

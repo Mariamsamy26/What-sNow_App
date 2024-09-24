@@ -15,7 +15,6 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController searchController = TextEditingController();
-
   Timer? debounce;
 
   @override
@@ -45,7 +44,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    DLogic DObject =BlocProvider.of(context);
+    DLogic DObject = BlocProvider.of<DLogic>(context);
     return SafeArea(
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -87,67 +86,70 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
         body: Container(
           color: Theme.of(context).colorScheme.primary,
-          child: Column(
-            children: [
-              Expanded(
-                child: BlocBuilder<NewsLogic, NewsState>(
-                  builder: (context, state) {
-                    if (state is Search_news) {
-                      var newsModel = state.newsResponse;
-                      var articlesList = newsModel?.articles;
+          child: BlocConsumer<NewsLogic, NewsState>(
+            listener: (context, state) {
+              if (state is SearchError) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(state.message ?? 'Error loading news')),
+                );
+              }
+            },
+            builder: (context, state) {
+              if (state is SearchLoading) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (state is Search_news) {
+                var newsModel = state.newsResponse;
+                var articlesList = newsModel?.articles;
 
-                      if (articlesList != null && articlesList.isNotEmpty) {
-                        return ListView.builder(
-                          itemCount: articlesList.length,
-                          itemBuilder: (context, index) {
-                            var article = articlesList[index];
-                            if (article.urlToImage != null) {
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                child: CustomNews(
-                                  linkN: article.url != null ? Uri.parse(article.url!) : Uri(),
-                                  urlImage: article.urlToImage ?? '',
-                                  title: article.title ?? 'No title',
-                                  onPressedFav: () async {
-                                    if(!await DObject.searchByTitle(title: article.title.toString())){
-                                      DObject.insertFavouriteElement(title: article.title.toString(), url: article.url.toString(), imageUrl: article.urlToImage.toString());
-                                    }
-                                    else
-                                    {
-                                      DObject.deleteFavouriteElement(title: article.title.toString());
-                                    }
-                                  },
-                                  iconFavFuture: DObject.searchByTitle(title: article.title.toString()),
-                                  onTap: () {
-                                    DObject.insertHistoryElement(title: article.title.toString(), url: article.url.toString(), imageUrl: article.urlToImage.toString());
-
-                                    for(int i=0;i<articlesList.length;i++) {
-                                      articlesList.removeAt(i);
-                                    }
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => NewsDetails(
-                                          url: article.url ?? '',
-                                        ),
-                                      ),
-                                    );
-                                  },
+                if (articlesList != null && articlesList.isNotEmpty) {
+                  return ListView.builder(
+                    itemCount: articlesList.length,
+                    itemBuilder: (context, index) {
+                      var article = articlesList[index];
+                      if (article.urlToImage != null) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: CustomNews(
+                            iconSec: DObject.isFavorite(article.title.toString())
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            urlImage: article.urlToImage ?? '',
+                            title: article.title ?? 'No title',
+                            linkN: article.url != null ? Uri.parse(article.url!) : Uri(),
+                            onTap: () {
+                              DObject.insertHistoryElement(
+                                title: article.title.toString(),
+                                url: article.url.toString(),
+                                imageUrl: article.urlToImage.toString(),
+                              );
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => NewsDetails(
+                                    url: article.url ?? '',
+                                  ),
                                 ),
                               );
-                            }
-                            return SizedBox.shrink();
-                          },
+                            },
+                            onPressedSec: () async {
+                              await DObject.favNews(
+                                article.title.toString(),
+                                article.url.toString(),
+                                article.urlToImage.toString(),
+                              );
+                            },
+                          ),
                         );
-                      } else {
-                        return const Center(child: Text('No news available'));
                       }
-                    } else {
-                      return const Center(child: Text('Error loading news ..'));
-                    }
-                  },
-                ),
-              ),
-            ],
+                      return SizedBox.shrink();
+                    },
+                  );
+                } else {
+                  return const Center(child: Text('No news available'));
+                }
+              } else {
+                return const Center(child: Text('Error loading news..'));
+              }
+            },
           ),
         ),
       ),

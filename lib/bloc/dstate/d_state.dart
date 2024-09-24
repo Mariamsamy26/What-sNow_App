@@ -22,3 +22,6 @@ class DeleteFavouriteElement extends DState{}
 class ClearFavourite extends DState{}
 
 class SetUserID extends DState {}
+
+class FavState extends DState {}
+

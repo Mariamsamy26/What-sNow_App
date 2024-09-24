@@ -6,6 +6,7 @@ import 'd_state.dart';
 class DLogic extends Cubit<DState> {
   List<Map> historyList = [];
   List<Map> favouriteList = [];
+  final Map<String, bool> favorites = {};
   late Database db;
 
   DLogic() :super(InitI());
@@ -50,6 +51,23 @@ class DLogic extends Cubit<DState> {
       favouriteList = value;
       emit(LoadFavouriteList());
     });
+  }
+
+  Future<void> favNews(String title, String url, String imageUrl) async {
+    // Toggle favorite status based on the current status
+    if (favorites.containsKey(title) && favorites[title]!) {
+      await deleteFavouriteElement(title: title);
+      favorites[title] = false; // Mark as not favorite
+    } else {
+      await insertFavouriteElement(title: title, url: url, imageUrl: imageUrl);
+      favorites[title] = true; // Mark as favorite
+    }
+    emit(FavState()); // Emit the new favorite state
+  }
+
+  // Add a method to check if a title is favorite
+  bool isFavorite(String title) {
+    return favorites[title] ?? false;
   }
 
   insertHistoryElement

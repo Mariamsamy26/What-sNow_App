@@ -12,7 +12,7 @@ import 'NewsDetails.dart';
 class CategoryNews extends StatelessWidget {
   final String category;
 
-  CategoryNews({required this.category});
+  const CategoryNews({super.key, required this.category});
 
   @override
   Widget build(BuildContext context) {
@@ -28,15 +28,14 @@ class CategoryNews extends StatelessWidget {
       child: BlocConsumer<NewsLogic, NewsState>(
         listener: (context, state) {
           if (state is Get_newsD) {
-            // Handle error if needed
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Error loading news')),
+              const SnackBar(content: Text('Error loading news')),
             );
           }
         },
         builder: (context, state) {
-          NewsLogic obj = BlocProvider.of(context);
-          DLogic DObject = BlocProvider.of(context);
+          final newsLogic = BlocProvider.of<NewsLogic>(context);
+          final dLogic = BlocProvider.of<DLogic>(context);
 
           return Scaffold(
             appBar: AppBar(
@@ -71,24 +70,18 @@ class CategoryNews extends StatelessWidget {
 
                             if (article.urlToImage != null) {
                               return CustomNews(
-                                linkN: article.url != null
-                                    ? Uri.parse(article.url!)
-                                    : Uri(),
+                                iconSec: dLogic.isFavorite(article.title.toString())
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
                                 urlImage: article.urlToImage ?? '',
                                 title: article.title ?? 'No title',
-                                onPressedFav: () async {
-                                  if(!await DObject.searchByTitle(title: article.title.toString())){
-                                    DObject.insertFavouriteElement(title: article.title.toString(), url: article.url.toString(), imageUrl: article.urlToImage.toString());
-                                  }
-                                  else
-                                  {
-                                    DObject.deleteFavouriteElement(title: article.title.toString());
-                                  }
-                                },
-                                iconFavFuture: DObject.searchByTitle(title: article.title.toString()),
+                                linkN: article.url != null ? Uri.parse(article.url!) : Uri(),
                                 onTap: () {
-                                  DObject.insertHistoryElement(title: article.title.toString(), url: article.url.toString(), imageUrl: article.urlToImage.toString());
-
+                                  dLogic.insertHistoryElement(
+                                    title: article.title.toString(),
+                                    url: article.url.toString(),
+                                    imageUrl: article.urlToImage.toString(),
+                                  );
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) => NewsDetails(
@@ -96,6 +89,15 @@ class CategoryNews extends StatelessWidget {
                                       ),
                                     ),
                                   );
+                                },
+                                onPressedSec: () async {
+                                  await dLogic.favNews(
+                                    article.title.toString(),
+                                    article.url.toString(),
+                                    article.urlToImage.toString(),
+                                  );
+                                  // This forces the UI to rebuild and reflect the new favorite status
+                                  newsLogic.getNewsCategories(category: category);
                                 },
                               );
                             } else {

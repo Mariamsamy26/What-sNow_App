@@ -65,10 +65,6 @@ class HistoryTab extends StatelessWidget {
                               urlImage: DObject.historyList[i]["imageUrl"] ?? '',
                               title: DObject.historyList[i]["title"] ?? 'No title',
                               linkN: Uri.parse(DObject.historyList[i]["url"] )!,
-                              onPressedFav: () {
-                                DObject.deleteHistoryElement(title: DObject.historyList[i]["title"]);
-                              },
-                              iconFavFuture: DObject.searchByTitle(title: DObject.historyList[i]["title"].toString()),
                               onTap: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
@@ -77,7 +73,8 @@ class HistoryTab extends StatelessWidget {
                                     ),
                                   ),
                                 );
-                              },
+                              }, iconSec: Icons.delete,
+                              onPressedSec: () { DObject.deleteHistoryElement(title: DObject.historyList[i]["title"]); },
                             ),
                       ],
                     ),

@@ -56,6 +56,7 @@ class FavororitesTab extends StatelessWidget {
                                   in DObject.favouriteList)
                                 if (favouriteElement["imageUrl"] != null)
                                   CustomNews(
+                                    iconSec:Icons.favorite,
                                     urlImage:
                                         favouriteElement["imageUrl"] ?? '',
                                     title:
@@ -63,10 +64,7 @@ class FavororitesTab extends StatelessWidget {
                                     linkN: favouriteElement["url"] != null
                                         ? Uri.parse(favouriteElement["url"])
                                         : Uri(),
-                                    onPressedFav: () {
-                                      DObject.deleteFavouriteElement(title: favouriteElement["title"]);
-                                    },
-                                    iconFavFuture: DObject.searchByTitle(title: favouriteElement["title"]),
+
                                     onTap: () {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
@@ -75,7 +73,8 @@ class FavororitesTab extends StatelessWidget {
                                           ),
                                         ),
                                       );
-                                    },
+                                    }, onPressedSec: () {
+                                      DObject.deleteFavouriteElement(title: favouriteElement["title"]); },
                                   ),
                             ],
                           ),

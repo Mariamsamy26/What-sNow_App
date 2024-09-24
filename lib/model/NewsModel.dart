@@ -17,8 +17,6 @@ class NewsModel {
   String? status;
   int? totalResults;
   List<Articles>? articles;
-
-
 }
 
 class Articles {

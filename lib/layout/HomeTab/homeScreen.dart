@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:newsapp/layout/HomeTab/searchTap.dart';
 
 import '../../bloc/dstate/d_logic.dart';
+import '../../bloc/dstate/d_state.dart';
 import '../../bloc/newstate/NewsLogic.dart';
 import '../../bloc/newstate/NewsState.dart';
 import '../../color_manager.dart';
@@ -29,118 +30,113 @@ class HomeScreen extends StatelessWidget {
         ),
       ],
       child: BlocConsumer<NewsLogic, NewsState>(
-          listener: (context, state) {},
-          builder: (context, state) {
-            NewsLogic obj = BlocProvider.of(context);
-            DLogic DObject =BlocProvider.of(context);
-            return Scaffold(
-                appBar: AppBar(
-                  title: Text(
-                    "what's now",
-                    style: GoogleFonts.sevillana(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 50,
-                      color: ColorManager.primaryColor,
+        listener: (context, state) {},
+        builder: (context, state) {
+          NewsLogic newsLogic = BlocProvider.of<NewsLogic>(context);
+          DLogic dLogic = BlocProvider.of<DLogic>(context);
+
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(
+                "what's now",
+                style: GoogleFonts.sevillana(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 50,
+                  color: ColorManager.primaryColor,
+                ),
+              ),
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              centerTitle: true,
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (C) => SearchScreen()),
+                    );
+                  },
+                  icon: Icon(Icons.search, size: 35, color: ColorManager.primaryColor),
+                )
+              ],
+            ),
+            body: Container(
+              color: Theme.of(context).colorScheme.primary,
+              child: ListView(
+                children: [
+                  CustomDivider(labelText: 'CATEGORIES'),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        for (int i = 0; i < Categorylist.length; i++)
+                          Card(
+                            child: MaterialButton(
+                              padding: EdgeInsets.zero,
+                              child: SizedBox(
+                                width: 170,
+                                height: 100,
+                                child: Stack(
+                                  children: [
+                                    Positioned.fill(
+                                      child: Image.asset(
+                                        Categorylist[i].imgPath,
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                    Center(
+                                      child: Text(
+                                        Categorylist[i].label,
+                                        style: const TextStyle(
+                                          color: ColorManager.colorOffwhite,
+                                          fontSize: 30,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (C) => CategoryNews(
+                                    category: Categorylist[i].label,
+                                  ),
+                                ));
+                              },
+                            ),
+                          )
+                      ],
                     ),
                   ),
-                  backgroundColor:Theme.of(context).colorScheme.primary,
-                  centerTitle: true,
-                  actions: [
-                    IconButton(
-                        onPressed: (){
-                          Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (C)=>SearchScreen())
-                          );
-                        },
-                        icon: Icon(Icons.search,size: 35,color: ColorManager.primaryColor,)
-                    )
-                  ],
-                ),
-                body: Container(
-                  color: Theme.of(context).colorScheme.primary,
-                  child: ListView(
-                    children: [
-                      CustomDivider(labelText: 'CATEGORIES'),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            for (int i = 0; i < Categorylist.length; i++)
-                              Card(
-                                child: MaterialButton(
-                                  padding: EdgeInsets.zero,
-                                  child: SizedBox(
-                                    width: 170,
-                                    height: 100,
-                                    child: Stack(
-                                      children: [
-                                        Positioned.fill(
-                                          child: Image.asset(
-                                            Categorylist[i].imgPath,
-                                            fit: BoxFit.fill, // Ensure the image covers the container
-                                          ),
-                                        ),
-                                        Center(
-                                          child: Text(
-                                            Categorylist[i].label,
-                                            style: const TextStyle(
-                                              color:
-                                              ColorManager.colorOffwhite,
-                                              fontSize: 30,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                        builder: (C) => CategoryNews(
-                                          category:
-                                          Categorylist[i].label,
-                                        )));
-                                  },
-                                ),
-                              )
-                          ],
-                        ),
-                      ),
+                  CustomDivider(labelText: 'Top news'),
+                  Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: BlocBuilder<NewsLogic, NewsState>(
+                      builder: (context, state) {
+                        if (state is InitNews) {
+                          return const Center(child: CircularProgressIndicator());
+                        } else if (state is Random_news) {
+                          var newsModel = state.newsResponse;
+                          var articlesList = newsModel?.articles;
 
-                      CustomDivider(labelText: 'Top news'),
-
-                      Padding(
-                        padding: const EdgeInsets.all(15),
-                        child: BlocBuilder<NewsLogic, NewsState>(
-                          builder: (context, state) {
-                            if (state is InitNews) {
-                              return const Center(child: CircularProgressIndicator());
-                            } else if (state is Random_news) {
-                              var newsModel = state.newsResponse;
-                              var articlesList = newsModel?.articles;
-
-                              if (articlesList != null && articlesList.isNotEmpty) {
-                                return Column(
-                                  children: [
-                                    for (var article in articlesList)
-                                      if (article.urlToImage != null)
-                                        CustomNews(
+                          if (articlesList != null && articlesList.isNotEmpty) {
+                            return Column(
+                              children: [
+                                for (var article in articlesList)
+                                  if (article.urlToImage != null)
+                                    BlocBuilder<DLogic, DState>(
+                                      builder: (context, dState) {
+                                        return CustomNews(
+                                          iconSec: dLogic.isFavorite(article.title.toString())
+                                              ? Icons.favorite
+                                              : Icons.favorite_border,
                                           urlImage: article.urlToImage ?? '',
                                           title: article.title ?? 'No title',
-                                          linkN:article.url != null ? Uri.parse(article.url!) : Uri(),
-                                          onPressedFav: () async {
-                                            if(!await DObject.searchByTitle(title: article.title.toString())){
-                                              DObject.insertFavouriteElement(title: article.title.toString(), url: article.url.toString(), imageUrl: article.urlToImage.toString());
-                                            }
-                                            else
-                                            {
-                                              DObject.deleteFavouriteElement(title: article.title.toString());
-                                            }
-                                          },
-                                          iconFavFuture: DObject.searchByTitle(title: article.title.toString()),
+                                          linkN: article.url != null ? Uri.parse(article.url!) : Uri(),
                                           onTap: () {
-                                            DObject.insertHistoryElement(title: article.title.toString(), url: article.url.toString(), imageUrl: article.urlToImage.toString());
+                                            dLogic.insertHistoryElement(
+                                              title: article.title.toString(),
+                                              url: article.url.toString(),
+                                              imageUrl: article.urlToImage.toString(),
+                                            );
                                             Navigator.of(context).push(
                                               MaterialPageRoute(
                                                 builder: (context) => NewsDetails(
@@ -149,24 +145,35 @@ class HomeScreen extends StatelessWidget {
                                               ),
                                             );
                                           },
-                                        ),
-                                  ],
-                                );
-                              } else {
-                                return const Center(child: Text('No news available'));
-                              }
-                            } else if (state is Get_newsD) {
-                              return const Center(child: Text('Error loading news'));
-                            } else {
-                              return const Center(child: Text('No news available'));
-                            }
-                          },
-                        ),
-                      ),
-                    ],
+                                          onPressedSec: () async {
+                                            await dLogic.favNews(
+                                              article.title.toString(),
+                                              article.url.toString(),
+                                              article.urlToImage.toString(),
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ),
+                              ],
+                            );
+                          } else {
+                            return const Center(child: Text('No news available'));
+                          }
+                        } else if (state is Get_newsD) {
+                          return const Center(child: Text('Error loading news'));
+                        } else {
+                          return const Center(child: Text('No news available'));
+                        }
+                      },
+                    ),
                   ),
-                ));
-          }),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 
