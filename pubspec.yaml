@@ -45,6 +45,7 @@ dependencies:
   firebase_core:
   firebase_auth:
   font_awesome_flutter:
+  shared_preferences:
   webview_flutter: ^4.0.0
 
 dev_dependencies:
