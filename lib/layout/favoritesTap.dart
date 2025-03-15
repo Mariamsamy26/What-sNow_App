@@ -49,35 +49,32 @@ class FavororitesTab extends StatelessWidget {
                       )
                     : Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              for (var favouriteElement
-                                  in DObject.favouriteList)
-                                if (favouriteElement["imageUrl"] != null)
-                                  CustomNews(
-                                    iconSec:Icons.favorite,
-                                    urlImage:
-                                        favouriteElement["imageUrl"] ?? '',
-                                    title:
-                                        favouriteElement["title"] ?? 'No title',
-                                    linkN: favouriteElement["url"] != null
-                                        ? Uri.parse(favouriteElement["url"])
-                                        : Uri(),
+                        child: ListView.builder(
+                          itemCount: DObject.favouriteList.length,
+                          itemBuilder: ( context,  index) {
+                            return CustomNews(
+                              iconSec:Icons.favorite,
+                              urlImage:
+                              DObject.favouriteList[index]["imageUrl"] ?? '',
+                              title:
+                              DObject.favouriteList[index]["title"] ?? 'No title',
+                              linkN: DObject.favouriteList[index]["url"] != null
+                                  ? Uri.parse(DObject.favouriteList[index]["url"])
+                                  : Uri(),
 
-                                    onTap: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) => NewsDetails(
-                                            url: favouriteElement["url"] ?? '',
-                                          ),
-                                        ),
-                                      );
-                                    }, onPressedSec: () {
-                                      DObject.deleteFavouriteElement(title: favouriteElement["title"]); },
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => NewsDetails(
+                                      url: DObject.favouriteList[index]["url"] ?? '',
+                                    ),
                                   ),
-                            ],
-                          ),
+                                );
+                              }, onPressedSec: () {
+                              DObject.deleteFavouriteElement(title: DObject.favouriteList[index]["title"]); },
+                            );
+                          },
+
                         ),
                       ),
               ),
